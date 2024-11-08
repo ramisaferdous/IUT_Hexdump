@@ -1,8 +1,10 @@
 const express = require('express');
+const path = require('path');
 const router = express.Router();
-const promptController = require('../controller/prompt.controller.js'); 
 
 
-router.get('/prompt', promptController.handleAPI);
+router.get('/prompt', (req,res)=>{
+    res.sendFile(path.join(__dirname, '../index.js')); 
+});
 
 module.exports = router;
