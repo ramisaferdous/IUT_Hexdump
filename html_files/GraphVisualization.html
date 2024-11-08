@@ -172,7 +172,7 @@
       svg.selectAll('circle').remove();
       svg.selectAll('text').remove();
 
-      // Draw undirected edges and attach click handler to update or remove edges
+      
       svg.selectAll('line.undirected')
         .data(edges.filter(e => !e.directed))
         .enter().append('line')
@@ -185,7 +185,7 @@
         .attr('stroke-width', 2)
         .on('click', handleEdgeClick);
 
-      // Draw directed edges and attach click handler to update or remove edges
+    
       svg.selectAll('line.directed')
         .data(edges.filter(d => d.directed))
         .enter().append('line')
@@ -238,12 +238,12 @@
 
     function handleEdgeClick(event, d) {
       if (mode === 'removeEdge') {
-        // Remove the selected edge from the edges arrayh
+       
         const index = edges.findIndex(edge => edge.source === d.source && edge.target === d.target && edge.directed === d.directed);
         if (index > -1) {
           edges.splice(index, 1);
         }
-        updateGraph(); // Re-render the graph after removing the edge
+        updateGraph(); 
       } else if (mode === 'edge' || mode === 'directedEdge') {
         updateEdgeWeight(d);
       }
@@ -253,7 +253,7 @@
       const newWeight = prompt("Enter the new weight for this edge:", edge.weight);
       if (newWeight !== null) {
         edge.weight = parseInt(newWeight, 10) || edge.weight;
-        updateGraph();  // Re-render the graph with updated weights
+        updateGraph();  
       }
     }
 

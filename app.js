@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const signupRoutes = require('./routes/signup.routes');
+const exerciseRoutes = require('./routes/exercise.routes');
 const loginRoutes = require('./routes/login.routes');
 const dashboardRoutes = require('./routes/dashboard.routes');
 const learningModeRoutes = require('./routes/learningMode.routes');
@@ -55,6 +56,7 @@ app.use(graphVisualizationRoutes);
 app.use(learningModeRoutes);
 app.use(codeExecutionRoutes);
 app.use(promptRoutes);
+app.use(exerciseRoutes);
 
 
 
