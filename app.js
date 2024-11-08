@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 const signupRoutes = require('./routes/signup.routes');
 const loginRoutes = require('./routes/login.routes');
 const dashboardRoutes = require('./routes/dashboard.routes');
-
+const learningModeRoutes = require('./routes/learningMode.routes');
 const graphVisualizationRoutes = require('./routes/graphVisualization.routes');
 
 app.use(session({
@@ -47,6 +47,7 @@ app.use(signupRoutes);
 app.use(loginRoutes);
 app.use(dashboardRoutes);
 app.use(graphVisualizationRoutes);
+app.use(learningModeRoutes);
 
 const port = 3000;
 app.listen(port, () => {
