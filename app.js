@@ -18,6 +18,7 @@ const loginRoutes = require('./routes/login.routes');
 const dashboardRoutes = require('./routes/dashboard.routes');
 const learningModeRoutes = require('./routes/learningMode.routes');
 const graphVisualizationRoutes = require('./routes/graphVisualization.routes');
+const codeExecutionRoutes = require('./routes/codeExecution.routes');
 
 app.use(session({
     secret: 'your-secret-key', 
@@ -48,6 +49,9 @@ app.use(loginRoutes);
 app.use(dashboardRoutes);
 app.use(graphVisualizationRoutes);
 app.use(learningModeRoutes);
+app.use(codeExecutionRoutes);
+
+
 
 const port = 3000;
 app.listen(port, () => {
