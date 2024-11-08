@@ -17,6 +17,7 @@ const signupRoutes = require('./routes/signup.routes');
 const loginRoutes = require('./routes/login.routes');
 const dashboardRoutes = require('./routes/dashboard.routes');
 
+const graphVisualization=require('./routes/graphVisualization.route');
 
 app.use(session({
     secret: 'your-secret-key', 
@@ -45,7 +46,7 @@ app.use(ensureAuthenticated);
 app.use(signupRoutes);
 app.use(loginRoutes);
 app.use(dashboardRoutes);
-
+app.use(graphVisualization);
 
 const port = 3000;
 app.listen(port, () => {
