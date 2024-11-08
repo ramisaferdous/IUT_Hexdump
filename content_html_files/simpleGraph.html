@@ -3,17 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S</title>
+    <title>Simple Graph</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 17px;
-            line-height: 1.6;
             margin-top: 40px;
-         
+            line-height: 1.6;
+            color: #555;
         }
-        .font-color{
-        color: rgb(83, 83, 195);
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        .applications {
+            margin-top: 20px;
         }
         .image-container {
             text-align: center;
@@ -24,14 +30,32 @@
           
             height: auto;
         }
-        h1, h2 {
-            color: #333;
-        }
-        p, li {
-            color: #555;
-        }
     </style>
 </head>
 <body>
+
+    <h1>Simple Graph</h1>
+    <p>
+        A simple graph is a graph that does not contain more than one edge between the pair of vertices. 
+        If each pair of nodes or vertices in a graph <b>G=(V, E)</b> has only one edge, it is a simple graph.
+        As a result, there is just one edge linking two vertices, depicting one-to-one interactions between two elements.
+    </p>
+    <div class="image-container">
+       
+        <img src="../images/Simple Graph.png" alt="Graph illustration">
+    </div>
+    <p>
+        There are four vertices here labeled B, C, E, F. Each vertex appears to be connected to others with straight edges.
+        It is a simple graph because it does not contain any self-loops (edges connecting a vertex to itself) or multiple edges between any two vertices.
+    </p>
+
+    <h2>Applications</h2>
+    <div class="applications">
+        <ul>
+            <li><b>Social Networks</b>: Represent friendships, where each edge signifies a connection without self-loops or multiple edges.</li>
+            <li><b>Transportation Networks</b>: Cities or stations as nodes connected by edges that represent direct paths without redundant links.</li>
+        </ul>
+    </div>
+
 </body>
 </html>
