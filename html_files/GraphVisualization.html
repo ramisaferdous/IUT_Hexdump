@@ -124,6 +124,7 @@
       <button onclick="setMode('edge')">Add Edge</button>
       <button onclick="setMode('directedEdge')">Add Directed Edge</button>
       <button onclick="setMode('removeEdge')">Remove Edge</button>
+      <button onclick="applyDijkstra()">Apply Dijkstra Algorithm</button>
       <button onclick="downloadAsJPG()">Download as JPG</button>
     </div>
   </div>
@@ -171,7 +172,7 @@
       svg.selectAll('circle').remove();
       svg.selectAll('text').remove();
 
-      //  For drawing undirected edges and attach click handler to update or remove edges
+      // Draw undirected edges and attach click handler to update or remove edges
       svg.selectAll('line.undirected')
         .data(edges.filter(e => !e.directed))
         .enter().append('line')
@@ -184,7 +185,7 @@
         .attr('stroke-width', 2)
         .on('click', handleEdgeClick);
 
-      // For drawing directed edges
+      // Draw directed edges and attach click handler to update or remove edges
       svg.selectAll('line.directed')
         .data(edges.filter(d => d.directed))
         .enter().append('line')
@@ -219,9 +220,21 @@
         .attr('dy', 5).attr('dx', -10)
         .text(d => d.id).attr('fill', 'white');
 
+      addEdgeWeights();
     }
 
-    
+    function addEdgeWeights() {
+      svg.selectAll('.weight').remove();
+      svg.selectAll('.weight')
+        .data(edges)
+        .enter().append('text')
+        .attr('class', 'weight')
+        .attr('x', d => (nodes.find(n => n.id === d.source).x + nodes.find(n => n.id === d.target).x) / 2)
+        .attr('y', d => (nodes.find(n => n.id === d.source).y + nodes.find(n => n.id === d.target).y) / 2)
+        .attr('dy', -5)
+        .attr('fill', '#000')
+        .text(d => d.weight);
+    }
 
     function handleEdgeClick(event, d) {
       if (mode === 'removeEdge') {
@@ -236,9 +249,50 @@
       }
     }
 
-  
+    function updateEdgeWeight(edge) {
+      const newWeight = prompt("Enter the new weight for this edge:", edge.weight);
+      if (newWeight !== null) {
+        edge.weight = parseInt(newWeight, 10) || edge.weight;
+        updateGraph();  // Re-render the graph with updated weights
+      }
+    }
 
-   
+    function generateGraphFromCSV() {
+      const fileInput = document.getElementById('csvFileInput');
+      const file = fileInput.files[0];
+      if (!file) return alert("Please upload a CSV file.");
+
+      Papa.parse(file, {
+        header: true,
+        complete: (results) => {
+          const data = results.data.filter(row => row.NodeID && row.Target);
+          nodes.length = 0;
+          edges.length = 0;
+
+          data.forEach(row => {
+            const { NodeID, Target, Weight, Directed } = row;
+
+            if (!nodes.find(n => n.id === NodeID)) {
+              nodes.push({ id: NodeID, x: Math.random() * 500 + 50, y: Math.random() * 400 + 50 });
+            }
+            if (!nodes.find(n => n.id === Target)) {
+              nodes.push({ id: Target, x: Math.random() * 500 + 50, y: Math.random() * 400 + 50 });
+            }
+
+            edges.push({
+              source: NodeID,
+              target: Target,
+              weight: parseInt(Weight) || 0,
+              directed: Directed === 'true'
+            });
+          });
+
+          updateGraph();
+        },
+        error: (error) => console.error("Error parsing CSV file:", error),
+      });
+    }
+
     function handleNodeClick(event, d) {
       if (mode === 'edge' || mode === 'directedEdge') {
         if (selectedNode === null) {
@@ -270,8 +324,24 @@
       d3.select(this).attr('stroke', null);
     }
 
-  
+    function downloadAsJPG() {
+      const canvasContainer = document.getElementById('canvasGrid');
 
+      html2canvas(canvasContainer).then((canvas) => {
+        const dataURL = canvas.toDataURL('image/jpeg', 1.0);
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'graph-visualization.jpg';
+        document.body.appendChild(link);
+        link.click();
+      }).catch((error) => {
+        console.error('Error capturing the canvas:', error);
+      });
+    }
+
+    function applyDijkstra() {
+      alert("Dijkstra's Algorithm functionality to be implemented.");
+    }
   </script>
 </body>
 
