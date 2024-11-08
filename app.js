@@ -10,6 +10,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.use(express.static('html_files'));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 app.use('/content_html_files', express.static(path.join(__dirname, 'content_html_files')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
