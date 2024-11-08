@@ -225,7 +225,7 @@
 
     function handleEdgeClick(event, d) {
       if (mode === 'removeEdge') {
-        // Remove the selected edge from the edges array
+        // Remove the selected edge from the edges arrayh
         const index = edges.findIndex(edge => edge.source === d.source && edge.target === d.target && edge.directed === d.directed);
         if (index > -1) {
           edges.splice(index, 1);
