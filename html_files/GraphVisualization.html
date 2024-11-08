@@ -124,14 +124,155 @@
       <button onclick="setMode('edge')">Add Edge</button>
       <button onclick="setMode('directedEdge')">Add Directed Edge</button>
       <button onclick="setMode('removeEdge')">Remove Edge</button>
-      <button onclick="applyDijkstra()">Apply Dijkstra Algorithm</button>
       <button onclick="downloadAsJPG()">Download as JPG</button>
     </div>
   </div>
   <div class="canvas-container">
     <div class="canvas-grid" id="canvasGrid"></div>
   </div>
+  <script>
+    const nodes = [];
+    const edges = [];
+    let mode = 'node';
+    let selectedNode = null;
+
+    const svg = d3.select('#canvasGrid').append('svg')
+      .attr('width', '100%')
+      .attr('height', '100%');
+
+    const defs = svg.append('defs');
+    defs.append('marker')
+      .attr('id', 'arrowhead')
+      .attr('viewBox', '0 0 10 10')
+      .attr('refX', 15)
+      .attr('refY', 5)
+      .attr('markerWidth', 8)
+      .attr('markerHeight', 8)
+      .attr('orient', 'auto')
+      .append('path')
+      .attr('d', 'M 0 0 L 10 5 L 0 10 Z')
+      .attr('fill', '#ff0000');
+
+    function addNode() {
+      const id = `${nodes.length + 1}`;
+      const x = Math.random() * 500 + 50;
+      const y = Math.random() * 400 + 50;
+      nodes.push({ id, x, y });
+      updateGraph();
+    }
+
+    function setMode(modeType) {
+      mode = modeType;
+      selectedNode = null;
+    }
+
+    function updateGraph() {
+      svg.selectAll('line').remove();
+      svg.selectAll('circle').remove();
+      svg.selectAll('text').remove();
+
+      //  For drawing undirected edges and attach click handler to update or remove edges
+      svg.selectAll('line.undirected')
+        .data(edges.filter(e => !e.directed))
+        .enter().append('line')
+        .attr('class', 'undirected')
+        .attr('x1', d => nodes.find(n => n.id === d.source).x)
+        .attr('y1', d => nodes.find(n => n.id === d.source).y)
+        .attr('x2', d => nodes.find(n => n.id === d.target).x)
+        .attr('y2', d => nodes.find(n => n.id === d.target).y)
+        .attr('stroke', '#007bff')
+        .attr('stroke-width', 2)
+        .on('click', handleEdgeClick);
+
+      // For drawing directed edges
+      svg.selectAll('line.directed')
+        .data(edges.filter(d => d.directed))
+        .enter().append('line')
+        .attr('class', 'directed')
+        .attr('x1', d => nodes.find(n => n.id === d.source).x)
+        .attr('y1', d => nodes.find(n => n.id === d.source).y)
+        .attr('x2', d => nodes.find(n => n.id === d.target).x)
+        .attr('y2', d => nodes.find(n => n.id === d.target).y)
+        .attr('stroke', '#ff0000')
+        .attr('stroke-width', 2)
+        .attr('marker-end', 'url(#arrowhead)')
+        .on('click', handleEdgeClick);
+
+      svg.selectAll('circle')
+        .data(nodes)
+        .enter().append('circle')
+        .attr('cx', d => d.x)
+        .attr('cy', d => d.y)
+        .attr('r', 20)
+        .attr('fill', '#007bff')
+        .on('click', handleNodeClick)
+        .call(d3.drag()
+          .on('start', dragStarted)
+          .on('drag', dragged)
+          .on('end', dragEnded));
+
+      svg.selectAll('text')
+        .data(nodes)
+        .enter().append('text')
+        .attr('x', d => d.x)
+        .attr('y', d => d.y)
+        .attr('dy', 5).attr('dx', -10)
+        .text(d => d.id).attr('fill', 'white');
+
+    }
+
+    
+
+    function handleEdgeClick(event, d) {
+      if (mode === 'removeEdge') {
+        // Remove the selected edge from the edges array
+        const index = edges.findIndex(edge => edge.source === d.source && edge.target === d.target && edge.directed === d.directed);
+        if (index > -1) {
+          edges.splice(index, 1);
+        }
+        updateGraph(); // Re-render the graph after removing the edge
+      } else if (mode === 'edge' || mode === 'directedEdge') {
+        updateEdgeWeight(d);
+      }
+    }
+
   
+
+   
+    function handleNodeClick(event, d) {
+      if (mode === 'edge' || mode === 'directedEdge') {
+        if (selectedNode === null) {
+          selectedNode = d;
+          d3.select(this).attr('fill', 'green');
+        } else {
+          if (mode === 'edge') {
+            edges.push({ source: selectedNode.id, target: d.id, weight: 0, directed: false });
+          } else if (mode === 'directedEdge') {
+            edges.push({ source: selectedNode.id, target: d.id, weight: 0, directed: true });
+          }
+          updateGraph();
+          selectedNode = null;
+          svg.selectAll('circle').attr('fill', '#007bff');
+        }
+      }
+    }
+
+    function dragStarted(event, d) {
+      d3.select(this).raise().attr('stroke', 'black');
+    }
+
+    function dragged(event, d) {
+      d3.select(this).attr('cx', d.x = event.x).attr('cy', d.y = event.y);
+      updateGraph();
+    }
+
+    function dragEnded(event, d) {
+      d3.select(this).attr('stroke', null);
+    }
+
+  
+
+  </script>
 </body>
 
 </html>
