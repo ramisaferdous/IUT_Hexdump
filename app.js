@@ -20,6 +20,7 @@ const dashboardRoutes = require('./routes/dashboard.routes');
 const learningModeRoutes = require('./routes/learningMode.routes');
 const graphVisualizationRoutes = require('./routes/graphVisualization.routes');
 const codeExecutionRoutes = require('./routes/codeExecution.routes');
+const promptRoutes = require('./routes/prompt.routes');
 
 app.use(session({
     secret: 'your-secret-key', 
@@ -51,6 +52,7 @@ app.use(dashboardRoutes);
 app.use(graphVisualizationRoutes);
 app.use(learningModeRoutes);
 app.use(codeExecutionRoutes);
+app.use(promptRoutes);
 
 
 
