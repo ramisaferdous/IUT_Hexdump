@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
-       body{
-        font-family: Arial, sans-serif;
+        body {
+            font-family: Arial, sans-serif;
             background-color: #f4f4f9;
             margin: 10;
             display: flex;
             flex-direction: column;
             align-items: center;
-       } 
-       .navbar{
-        width: 100%;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -25,22 +27,24 @@
             position: fixed;
             top: 0;
             z-index: 1000;
-       }
-       .navbar #welcomeText {
-            font-size: 1.4em; /* Slightly increased font size */
-            font-weight: bold;
-            color: #ffd700; /* Yellow color */
         }
+
+        .navbar #welcomeText {
+            font-size: 1.4em; 
+            font-weight: bold;
+            color: #ffd700; 
+        }
+
         .navbar .button-container {
             display: flex;
-            gap: 10px; /* Space between buttons */
+            gap: 10px; 
         }
 
         .navbar a {
             color: #fff;
             text-decoration: none;
             padding: 10px 20px;
-            border: 2px solid #ffd700; /* Gold border color */
+            border: 2px solid #ffd700; 
             border-radius: 5px;
             font-weight: bold;
             transition: background-color 0.3s, color 0.3s;
@@ -51,10 +55,125 @@
             color: #1c1c3d;
         }
 
+        h1 {
+            font-size: 2em;
+            margin: 140px 0 40px;
+        }
 
+        .container {
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        .box-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .box {
+            width: 300px;
+            height: 250px; 
+            padding: 30px;
+            border-radius: 10px;
+            background-color: #1c1c3d;
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .box h2 {
+            margin-bottom: 10px;
+            font-size: 1.6em;
+        }
+
+        .box p {
+            color: #ccc;
+        }
+
+        .box a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffd700;
+            color: #1c1c3d;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            align-self: center; 
+        }
+
+        .box a:hover {
+            background-color: #e6c200;
+        }
     </style>
 </head>
 <body>
-    
+    <!-- Navbar -->
+    <div class="navbar">
+        <span id="welcomeText">Welcome to GraphXlearn!</span> 
+        <div class="button-container">
+            <a href="/dashboard/profile">View Profile</a>
+            <a href="/">Log Out</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Choose a content to explore</h1>
+        <div class="box-container">
+            <!-- Graph Visualization Box -->
+            <div class="box">
+                <h2>Graph Visualization</h2>
+                <p>Explore complex graph structures and visualize data through our interactive platform.</p>
+                <a href="/graph-visualization">Explore Visualization</a>
+            </div>
+
+             
+
+            <!-- Learning Mode Box -->
+            <div class="box">
+                <h2>Learning Mode</h2>
+                <p>Engage in interactive modules designed to deepen your understanding of algorithms.</p>
+                <a href="/learning-mode">Enter Learning Mode</a>
+            </div>
+
+
+            <!-- Code Execution Box -->
+            <div class="box">
+                <h2>Practice Code Execution</h2>
+                <p>Explore complex graph structures through practicing in code editor.</p>
+                <a href="/codeExecution"> Code Execution of Graph</a>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <script>
+        fetch('/dashboard/profile/data') 
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('errorMessage').innerText = data.error;
+                } else {
+                    document.getElementById('welcomeText').innerText = `Welcome to GraphXlearn, ${data.name}!`;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+                document.getElementById('errorMessage').innerText = 'Error fetching user data: ' + error.message;
+            });
+    </script>
 </body>
 </html>
