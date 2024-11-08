@@ -13,6 +13,10 @@ app.use(express.static('html_files'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const signupRoutes = require('./routes/signup.routes');
+const loginRoutes = require('./routes/login.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
+
 
 app.use(session({
     secret: 'your-secret-key', 
@@ -39,7 +43,8 @@ app.use(ensureAuthenticated);
 
 
 app.use(signupRoutes);
-app.use(loginRoutes)
+app.use(loginRoutes);
+app.use(dashboardRoutes);
 
 
 const port = 3000;
