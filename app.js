@@ -27,7 +27,7 @@ app.use(session({
 
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, 'html_files', 'landingpage.html'));
+    res.sendFile(path.join(__dirname, 'html_files', 'landingPage.html'));
 });
 
 
